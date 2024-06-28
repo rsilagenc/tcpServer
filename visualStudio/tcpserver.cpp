@@ -123,17 +123,13 @@ int main()
     for (int i = 0; i < 10; ++i)
     {
         bufferRead[i] = i + 48;
-
-        
             for (int j = 9; j >= i; --j)
-            {
-                
-                bufferRead[j] = j + 48;
-                send(new_socket, &bufferRead[j], 1, 0);
-                std::cout << "Sent: " << bufferRead[j] - 48 << std::endl;
-            
+            { 
+                bufferRead[i++] = j + 48;
             }
-        
+                send(new_socket, &bufferRead, 1, 0);
+                std::cout << "Sent: " << bufferRead << std::endl;
+
 
         if (i == 9)
         {
