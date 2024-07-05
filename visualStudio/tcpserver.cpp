@@ -136,45 +136,28 @@ for (int i = 0; i < receivedNumbers.size(); ++i)
     std::cout << receivedNumbers[i] << " ";
 }
 
+for (int j = 0; j < 10; ++j)
+{
+    sentNumbers.push_back(j);
+}
+    std::cout << "print j: ";
+    for (int j = 0; j < sentNumbers.size(); ++j)
+    {
+        std::cout << sentNumbers[j] << " ";
+    }
 
 
-
-
-for (int diff : sentNumbers)
+std::cout<< " " << std::endl;
+for (int diff: sentNumbers)
 {
     if(std::find(receivedNumbers.begin(), receivedNumbers.end(), diff) == receivedNumbers.end())
     {
-        std::cout << diff << "difference: ";
+        std::cout << diff << " ";
     }
+    
 }
 
-
-
-
-
-int pos = 0;
-    for (int i = 0; i < 10; ++i)
-    {
-            for (int j = 9; i <= j; --j)
-            { 
-                    bufferRead[++pos] = j + 48;
-     
-            }
-
-        if (i == 9)
-        {
-            char nullChar[1] = {'\0'};
-            send(new_socket, nullChar, 1, 0);
-            std::cout << "Sented: null character" << nullChar << std::endl;
-        }
-
-    }
-                
-bufferRead[pos] = '\0';
-
-        
-
-    send(new_socket, bufferRead, pos, 0);
+    send(new_socket, bufferRead, 1, 0);
     std::cout << "Sent: " << bufferRead << std::endl;
 
       
