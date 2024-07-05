@@ -5,6 +5,7 @@
 #include <unistd.h>     // for close function
 #include <fstream>      //for logging
 #include <vector>       //for vector
+#include <algorithm>    //for finding
 
 #define PORT 8080
 
@@ -120,16 +121,45 @@ int main()
     }
 
 
+std::vector<int>receivedNumbers;
+std::vector<int>sentNumbers;
+
+
+for (int i = 0; i < 10; ++i)
+{
+receivedNumbers.push_back(bufferRead[i] - 48);
+}
+
+std::cout << "print: ";
+for (int i = 0; i < receivedNumbers.size(); ++i)
+{
+    std::cout << receivedNumbers[i] << " ";
+}
+
+
+
+
+
+for (int diff : sentNumbers)
+{
+    if(std::find(receivedNumbers.begin(), receivedNumbers.end(), diff) == receivedNumbers.end())
+    {
+        std::cout << diff << "difference: ";
+    }
+}
+
+
+
+
+
+int pos = 0;
     for (int i = 0; i < 10; ++i)
     {
-        bufferRead[i] = i + 48;
-            for (int j = 9; j >= i; --j)
+            for (int j = 9; i <= j; --j)
             { 
-                bufferRead[i++] = j + 48;
+                    bufferRead[++pos] = j + 48;
+     
             }
-                send(new_socket, &bufferRead, 1, 0);
-                std::cout << "Sent: " << bufferRead << std::endl;
-
 
         if (i == 9)
         {
@@ -138,9 +168,14 @@ int main()
             std::cout << "Sented: null character" << nullChar << std::endl;
         }
 
-        
-        
     }
+                
+bufferRead[pos] = '\0';
+
+        
+
+    send(new_socket, bufferRead, pos, 0);
+    std::cout << "Sent: " << bufferRead << std::endl;
 
       
 
