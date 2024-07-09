@@ -6,6 +6,7 @@
 #include <fstream>      //for logging
 #include <vector>       //for vector
 #include <algorithm>    //for finding
+#include <cstdlib>      //for atoi()
 
 #define PORT 8080
 
@@ -148,18 +149,30 @@ for (int j = 0; j < 10; ++j)
 
 
 std::cout<< " " << std::endl;
-for (int diff: sentNumbers)
+for (int diff : sentNumbers)
 {
     if(std::find(receivedNumbers.begin(), receivedNumbers.end(), diff) == receivedNumbers.end())
     {
         std::cout << diff << " ";
     }
-    
+    std::cout << " " << std::endl;
+
+
+int bufferSent[1024] = {0};
+std::vector<int>diffVector;
+
+diffVector.push_back(diff);
+std::cout << " " << std::endl;
+
+std::copy(diffVector.begin(), diffVector.end(), bufferSent);
+
+
+
+    send(new_socket, bufferSent, 1, 0);
+
+    std::cout << "Sent: " << bufferSent << std::endl;
+
 }
-
-    send(new_socket, bufferRead, 1, 0);
-    std::cout << "Sent: " << bufferRead << std::endl;
-
       
 
     char bufferWrite[1024] = {0};
