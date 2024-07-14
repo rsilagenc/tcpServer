@@ -6,7 +6,6 @@
 #include <fstream>      //for logging
 #include <vector>       //for vector
 #include <algorithm>    //for finding
-#include <cstdlib>      //for atoi()
 
 #define PORT 8080
 
@@ -55,16 +54,12 @@ int main()
    
     {
         std::cerr << "Listen failed: " << strerror(errno) << std::endl;
-        throw std::runtime_error("Listen failed");
+
         /*this is a throw exception. this exception will propagate up the call stack
         until it's caught by a 'catch' block. if it's not caught, the program will
         terminate*/
-
-        /* `try`: This keyword is followed by a block of code where an exception might occur. This is known as a `try` block.
-
--           `catch`: This keyword is used to catch and handle exceptions. It's followed by a block of code that is executed
-             when an exception is thrown in the associated `try` block. This is known as a `catch` block.
-        */
+        throw std::runtime_error("Listen failed");
+        
     }
     std::cout << "Listening" << std::endl;
     
@@ -78,32 +73,27 @@ int main()
     std::cout << "Accepted" << new_socket<< std::endl;
 
    
-
-    std::ofstream logFile("server.log", std::ios::app);
     // The string "server.log" passed to the std::ofstream constructor is the name of the file to be opened.
     // This file will be created if it does not already exist.
     // If it does exist, the existing content will be deleted because by default std::ofstream opens files in overwrite mode.
     // so, we add the 'app' part because app means append mode
     // and in the append mode the file won't be overwrited
     // new data will be written to the end of the file
-
+    std::ofstream logFile("server.log", std::ios::app);
     logFile << "Client connected" << std::endl;
 
-    char bufferRead[1024] = {0};
-    
-
-    // it creates a buffer that has a size of 1024 characters and initialize them to zero.
+     // it creates a buffer that has a size of 1024 characters and initialize them to zero.
     //  {0} means initializer list. so in this code that means before reading any data my buffer will be null.
     // because compiler will initialize the array elements with values in the list. in this case it's zero.
     // so that means the array's all elements are zero. in char a zero is equivalent to null character '\0'
     // and this is used for marking end of the string in c++
 
     // so, this code creates a buffer that is filled with null characters.
-
-    ssize_t bytesRead;
-
+    char bufferRead[1024] = {0};
+        
     // we passed the read function to bytesRead function and now bytesRead is read's return value
     // on success, the number of bytes read is returned
+    ssize_t bytesRead;
 
     while (true)
     {
@@ -113,9 +103,10 @@ int main()
         {
         throw std::runtime_error("Read failed");
         }
-        bufferRead[bytesRead] = '\0';
+
         // this is used for null-terminate the string in the buffer
         // so, we can determine where the string ends
+        bufferRead[bytesRead] = '\0';
         std::cout << "Received: " << bufferRead << std::endl;
         break;
         
