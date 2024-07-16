@@ -149,7 +149,7 @@ for (int diff : sentNumbers)
         diffVector.push_back(diff);
     }
     std::cout << " " << std::endl;
-
+}
 int bufferSent[1024];
 std::copy(diffVector.begin(), diffVector.end(), bufferSent);
 
@@ -158,7 +158,7 @@ for (size_t i = 0; i < diffVector.size(); ++i) {
     std::cout << bufferSent[i] << " ";
 }
 std::cout << std::endl;
-}
+
       
 
     char bufferWrite[1024] = {0};
