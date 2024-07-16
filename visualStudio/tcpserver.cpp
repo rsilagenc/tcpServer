@@ -82,12 +82,7 @@ int main()
     std::ofstream logFile("server.log", std::ios::app);
     logFile << "Client connected" << std::endl;
 
-     // it creates a buffer that has a size of 1024 characters and initialize them to zero.
     //  {0} means initializer list. so in this code that means before reading any data my buffer will be null.
-    // because compiler will initialize the array elements with values in the list. in this case it's zero.
-    // so that means the array's all elements are zero. in char a zero is equivalent to null character '\0'
-    // and this is used for marking end of the string in c++
-
     // so, this code creates a buffer that is filled with null characters.
     char bufferRead[1024] = {0};
         
@@ -116,31 +111,36 @@ int main()
 std::vector<int>receivedNumbers;
 std::vector<int>sentNumbers;
 
-
 for (int i = 0; i < 10; ++i)
 {
 receivedNumbers.push_back(bufferRead[i] - 48);
 }
-
-std::cout << "print: ";
-for (int i = 0; i < receivedNumbers.size(); ++i)
-{
-    std::cout << receivedNumbers[i] << " ";
-}
+/* for printing out receivedNumbers vector
+* std::cout << "print: ";
+* for (int i = 0; i < receivedNumbers.size(); ++i)
+*   {
+*   std::cout << receivedNumbers[i] << " ";
+*   }
+*/
 
 for (int j = 0; j < 10; ++j)
 {
     sentNumbers.push_back(j);
 }
-    std::cout << "print j: ";
-    for (int j = 0; j < sentNumbers.size(); ++j)
-    {
-        std::cout << sentNumbers[j] << " ";
-    }
+/* for printing out sentNumbers vector
+ *
+ * std::cout << "print j: ";
+ *  for (int j = 0; j < sentNumbers.size(); ++j)
+ *  {
+ *     std::cout << sentNumbers[j] << " ";
+ *  }
+ * std::cout<< " " << std::endl;
+*/    
 
-
-std::cout<< " " << std::endl;
-
+/*
+* for printing out the different elements between receivedNumbers and sentNumbers vectors
+* we defined the diffVector vector
+*/
 std::vector<int> diffVector;
 for (int diff : sentNumbers)
 {
@@ -150,35 +150,31 @@ for (int diff : sentNumbers)
     }
     std::cout << " " << std::endl;
 }
+/*
+* we defined bufferSent array for sending the values to new_socket
+*/
 int bufferSent[1024];
 std::copy(diffVector.begin(), diffVector.end(), bufferSent);
-
 send(new_socket, bufferSent, sizeof(int) * diffVector.size(), 0);
-for (size_t i = 0; i < diffVector.size(); ++i) {
+for (int i = 0; i < diffVector.size(); ++i) 
+{
     std::cout << bufferSent[i] << " ";
 }
 std::cout << std::endl;
 
-      
+char bufferWrite[1024] = {0};
+ssize_t bytesWritten;
+bytesWritten = write(new_socket, bufferWrite, sizeof(bufferWrite));
 
-    char bufferWrite[1024] = {0};
-    ssize_t bytesWritten;
+if (bytesWritten == -1)
+{
+    throw std::runtime_error("Writing failed");
+}
 
-    
-        bytesWritten = write(new_socket, bufferWrite, sizeof(bufferWrite));
+bufferWrite[bytesWritten] = '\0';
+std::cout << "Written: " << bufferWrite << std::endl;
 
-        if (bytesWritten == -1)
-        {
-        throw std::runtime_error("Writing failed");
-        }
+close(server_fd);
 
-    bufferWrite[bytesWritten] = '\0';
-    std::cout << "Written: " << bufferWrite << std::endl;
-
-
-    
-    
-    close(server_fd);
-
-    return 0;
+return 0;
 }
