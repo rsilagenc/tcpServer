@@ -140,29 +140,24 @@ for (int j = 0; j < 10; ++j)
 
 
 std::cout<< " " << std::endl;
+
+std::vector<int> diffVector;
 for (int diff : sentNumbers)
 {
     if(std::find(receivedNumbers.begin(), receivedNumbers.end(), diff) == receivedNumbers.end())
     {
-        std::cout << diff << " ";
+        diffVector.push_back(diff);
     }
     std::cout << " " << std::endl;
 
-
-int bufferSent[1024] = {0};
-std::vector<int>diffVector;
-
-diffVector.push_back(diff);
-std::cout << " " << std::endl;
-
+int bufferSent[1024];
 std::copy(diffVector.begin(), diffVector.end(), bufferSent);
 
-
-
-    send(new_socket, bufferSent, 1, 0);
-
-    std::cout << "Sent: " << bufferSent << std::endl;
-
+send(new_socket, bufferSent, sizeof(int) * diffVector.size(), 0);
+for (size_t i = 0; i < diffVector.size(); ++i) {
+    std::cout << bufferSent[i] << " ";
+}
+std::cout << std::endl;
 }
       
 
